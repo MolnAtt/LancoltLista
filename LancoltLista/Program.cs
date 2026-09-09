@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.CodeDom;
 using System.Data;
 using System.Linq.Expressions;
@@ -131,6 +132,37 @@ namespace LancoltLista
 			}
 			public int Count { get => count; }
 
+			public List<T> ToList()
+			{
+				List<T> result = new List<T>(Count); // a Count miatt nem lesz resizing!
+
+				Elem<T> aktualis = fejelem.jobb; // "i=0"
+
+				while (aktualis != fejelem)  // "i<lista.Count"
+				{
+					result.Add(aktualis.ertek);
+					aktualis = aktualis.jobb;  // "i++"
+				}
+
+				return result;
+			}
+
+			public T[] ToArray()
+			{
+				T[] result = new T[Count]; // a Count miatt nem lesz resizing!
+
+				Elem<T> aktualis = fejelem.jobb; // "i=0"
+				int i = 0;
+
+				while (aktualis != fejelem)  // "i<lista.Count"
+				{
+					result[i] = aktualis.ertek;
+					aktualis = aktualis.jobb;  // "i++"
+					i++;
+				}
+
+				return result;
+			}
 
 		}
 		static void Main(string[] args)
