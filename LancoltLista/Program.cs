@@ -131,6 +131,10 @@ namespace LancoltLista
 				count--;
 			}
 			public int Count { get => count; }
+			//public int Count()
+			//{
+			//	return count;
+			//}
 
 			public List<T> ToList()
 			{
@@ -164,6 +168,52 @@ namespace LancoltLista
 				return result;
 			}
 
+			public int Megszamol(Func<T, bool> predikatum)
+			{
+				Elem<T> aktualis = fejelem.jobb;
+				int db = 0;
+				while (aktualis != fejelem)
+				{
+					aktualis = aktualis.jobb;
+					if (predikatum(aktualis.ertek))
+					{
+						db++;
+					}
+				}
+				return db;
+			}
+
+			public T First(Func<T, bool> predicate)
+			{
+				Elem<T> c = fejelem.jobb;
+				while (c != fejelem && !predicate(c.ertek))
+				{
+					c = c.jobb;
+				}
+
+				if (c == fejelem)
+				{
+					throw new Exception("Nincs ilyen tulajdonságú elem!");
+				}
+
+				return c.ertek;
+			}
+
+
+			public int FindIndex(Func<T, bool> p)
+			{
+				Elem<T> e = fejelem.jobb;
+				int i = 0;
+
+				while (e != fejelem && !p(e.ertek))
+				{
+					e = e.jobb;
+					i++;
+				}
+
+				if (e == fejelem) throw new Exception("Nincs ilyen tulajdonságú elem!");
+				return i;
+			}
 		}
 		static void Main(string[] args)
 		{
@@ -173,6 +223,7 @@ namespace LancoltLista
 			lista.Add(6);
 			lista.Add(7);
 			lista.Add(8);
+
 
 			Console.WriteLine(lista);
 			Console.WriteLine(lista.Count);
@@ -201,7 +252,18 @@ namespace LancoltLista
 
 			Console.WriteLine(lista);
 			Console.WriteLine(lista.Count);
+			Console.WriteLine(lista.Megszamol(x => x % 2 == 0));
+			Console.WriteLine(lista.First(x => x % 2 == 0 ));
+			//Console.WriteLine(lista.Last(x => x % 2 == 0));
+			Console.WriteLine(lista.FindIndex(x => x % 2 == 0));
+			//Console.WriteLine(lista.FindLastIndex(x => x % 2 == 0));
+			//Console.WriteLine(lista.Where(x => x % 2 == 0));
+			//Console.WriteLine(lista.Select(x => x + 2));
+			//Console.WriteLine(lista.Contains(x => x % 2 == 0));
+			//Console.WriteLine(lista.Max((x, y) => x.CompareTo(y)));
+			//Console.WriteLine(lista.Min((x, y) => x.CompareTo(y)));
 
+			//List<int> l = new List<int>();
 		}
 	}
 }
